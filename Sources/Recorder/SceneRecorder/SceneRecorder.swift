@@ -45,7 +45,7 @@ public final class SceneRecorder: BaseRecorder, Renderable, SCNSceneRendererDele
   ) throws {
     let queue = DispatchQueue(
       label: "SCNRecorder.Processing.DispatchQueue",
-      qos: .userInteractive
+      qos: .userInitiated
     )
     try self.init(
       videoInput: VideoInput(

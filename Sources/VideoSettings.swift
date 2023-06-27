@@ -68,17 +68,13 @@ public struct VideoSettings {
 extension VideoSettings {
 
   var outputSettings: [String: Any] {
-      var ostgs : [String: Any?] = [
-        AVVideoWidthKey: size?.width,
-        AVVideoHeightKey: size?.height,
-        AVVideoCodecKey: codec.avCodec,
-        AVVideoScalingModeKey: scalingMode.avScalingMode,
-        AVVideoColorPropertiesKey: videoColorProperties,
-        AVVideoCompressionPropertiesKey: codec.compressionProperties
-      ]
-      if #available(iOS 13, *) {
-          ostgs[AVVideoColorPropertiesKey]=videoColorProperties
-      }
-    return ostgs.compactMapValues({ $0 })
+    return ([
+      AVVideoWidthKey: size?.width,
+      AVVideoHeightKey: size?.height,
+      AVVideoCodecKey: codec.avCodec,
+      AVVideoScalingModeKey: scalingMode.avScalingMode,
+      AVVideoColorPropertiesKey: videoColorProperties,
+      AVVideoCompressionPropertiesKey: codec.compressionProperties
+    ] as [String: Any?]).compactMapValues({ $0 })
   }
 }
