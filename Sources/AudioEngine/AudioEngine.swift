@@ -47,7 +47,7 @@ public final class AudioEngine {
     }
   }
 
-  let queue = DispatchQueue(label: "AudioEngine.Processing", qos: .userInitiated)
+  let queue = DispatchQueue(label: "AudioEngine.Processing", qos: .userInteractive)
 
   lazy var engine: AVAudioEngine = {
     let engine = AVAudioEngine()
