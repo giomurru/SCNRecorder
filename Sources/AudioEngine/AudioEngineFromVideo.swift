@@ -133,6 +133,10 @@ public final class AudioEngineFromVideo {
           return
       }
       
+      // **Set the number of frames and flags for output**
+      numberFramesOut.pointee = numFrames
+      flagsOut.pointee = tapFlags
+      
       // Convert AudioTimeStamp to AVAudioTime
       guard let processingFormat = context.processingFormat else {
           print("Processing format not available")
@@ -163,6 +167,8 @@ public final class AudioEngineFromVideo {
           }
       }
   }
+
+  
 
     func startPlayback() {
         player.play()
