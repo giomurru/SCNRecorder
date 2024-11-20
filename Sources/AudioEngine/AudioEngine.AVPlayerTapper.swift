@@ -4,7 +4,6 @@ import AVFoundation
 extension AudioEngine {
   public final class AVPlayerTapper {
     private weak var player: AVPlayer?
-    private var playerItem: AVPlayerItem
     private var audioFormat: AVAudioFormat? = AVAudioFormat(standardFormatWithSampleRate: 44100, channels: 2)
     
     @SCNObservable public internal(set) var error: Swift.Error?
@@ -31,10 +30,9 @@ extension AudioEngine {
     
     public init(player: AVPlayer) {
       self.player = player
-      guard let currentItem = player.currentItem else {
-        fatalError("Player item is not initialized.")
+      guard player.currentItem != nil else {
+        fatalError("FATAL: Player item is not initialized.")
       }
-      self.playerItem = currentItem
     }
     
     private func setupAudioTap() {
@@ -42,8 +40,8 @@ extension AudioEngine {
       let audioMix = AVMutableAudioMix()
       
       // Get the first audio track
-      guard let audioTrack = playerItem.asset.tracks(withMediaType: .audio).first else {
-        print("No audio track found")
+      guard let audioTrack = player?.currentItem?.asset.tracks(withMediaType: .audio).first else {
+        print("ERROR: No audio track found")
         return
       }
       
@@ -57,11 +55,11 @@ extension AudioEngine {
       audioMix.inputParameters = [inputParams]
       
       // Set the audio mix to the player item
-      playerItem.audioMix = audioMix
+      player?.currentItem?.audioMix = audioMix
     }
     
     private func removeAudioTap() {
-      playerItem.audioMix = nil
+      player?.currentItem?.audioMix = nil
     }
     
     private func createAudioTapProcessor() -> MTAudioProcessingTap {
@@ -79,7 +77,7 @@ extension AudioEngine {
       let status = MTAudioProcessingTapCreate(kCFAllocatorDefault, &callbacks, kMTAudioProcessingTapCreationFlag_PostEffects, &tap)
       
       if status != noErr {
-        print("Error creating MTAudioProcessingTap: \(status)")
+        fatalError("FATAL: creating MTAudioProcessingTap: \(status)")
       }
       
       return tap!.takeRetainedValue()
@@ -122,7 +120,7 @@ extension AudioEngine {
       let storage = MTAudioProcessingTapGetStorage(tap)
       let context = Unmanaged<TapContext>.fromOpaque(storage).takeUnretainedValue()
       guard let selfInstance = context.selfInstance else {
-        print("Self instance not available")
+        print("ERROR: tapProcessCallback: selfInstance not available")
         return
       }
       
@@ -134,7 +132,7 @@ extension AudioEngine {
       // Get source audio and timestamp
       status = MTAudioProcessingTapGetSourceAudio(tap, numberFrames, bufferListInOut, &tapFlags, &timeRangeOut, &numFrames)
       if status != noErr {
-        print("Error getting source audio: \(status)")
+        print("ERROR: tapProcessCallback: getting source audio, MTAudioProcessingTapGetSourceAudio status: \(status)")
         return
       }
       
@@ -144,7 +142,7 @@ extension AudioEngine {
       
       // Convert AudioTimeStamp to AVAudioTime
       guard let processingFormat = context.processingFormat else {
-        print("Processing format not available")
+        print("ERROR: tapProcessCallback: Processing format is not available")
         return
       }
       
@@ -167,7 +165,7 @@ extension AudioEngine {
           let sampleBuffer = try AudioEngine.createAudioSampleBuffer(from: pcmBuffer, time: audioTime)
           selfInstance.recorder?.audioInput.audioEngine(didOutputAudioSampleBuffer: sampleBuffer)
         } catch let error {
-          print("ERROR: error creating audio sample buffer: \(error)")
+          print("ERROR: tapProcessCallback: error creating audio sample buffer: \(error)")
           selfInstance.error = error
         }
       }
