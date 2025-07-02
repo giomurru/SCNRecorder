@@ -60,9 +60,9 @@ extension CAMetalLayer: RecordableLayer {
   }
 
   @objc dynamic func swizzled_nextDrawable() -> CAMetalDrawable? {
-    let nextDrawable = swizzled_nextDrawable()
-    lastTexture = nextDrawable?.texture
-    return nextDrawable
+    let nextDrawable = swizzled_nextDrawable() //It calls swizzled_nextDrawable(), which due to the swizzle now actually invokes the original nextDrawable method.
+    lastTexture = nextDrawable?.texture //It extracts the texture from the returned drawable and stores it in the lastTexture property.
+    return nextDrawable //Finally, it returns the drawable as the original method would
   }
 }
 

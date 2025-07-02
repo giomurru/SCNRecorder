@@ -147,7 +147,7 @@ public final class AudioEngine {
 
         do {
           let sampleBuffer = try Self.createAudioSampleBuffer(from: buffer, time: time)
-          recorder.audioInput.audioEngine(self, didOutputAudioSampleBuffer: sampleBuffer)
+          recorder.audioInput.audioEngine(didOutputAudioSampleBuffer: sampleBuffer)
         }
         catch {
           self.error = error

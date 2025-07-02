@@ -206,7 +206,10 @@ extension VideoOutput {
   }
 
   func finish(completionHandler handler: @escaping () -> Void) {
-    queue.async { [weak self] in self?.unsafeFinish(completionHandler: handler) }
+    queue.async { [weak self] in
+      self?.unsafePause()
+      self?.unsafeFinish(completionHandler: handler)
+    }
   }
 
   func cancel() {
