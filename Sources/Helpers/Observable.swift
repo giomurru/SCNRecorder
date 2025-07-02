@@ -1,5 +1,5 @@
 //
-//  Observable.swift
+//  SCNObservable.swift
 //  SCNRecorder
 //
 //  Created by Vladislav Grigoryev on 31.05.2020.

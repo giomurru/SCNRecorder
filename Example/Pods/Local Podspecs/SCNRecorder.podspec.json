@@ -1,6 +1,6 @@
 {
   "name": "SCNRecorder",
-  "version": "2.7.0",
+  "version": "2.9.0",
   "summary": "A lags-free recorder of ARKit and SceneKit for iOS in Swift",
   "homepage": "https://github.com/gorastudio/SCNRecorder",
   "license": {
@@ -14,8 +14,8 @@
     "ios": "12.0"
   },
   "source": {
-    "git": "https://github.com/gorastudio/SCNRecorder.git",
-    "tag": "2.7.0"
+    "git": "https://github.com/gorastudio-ceo/SCNRecorder.git",
+    "tag": "2.9.0"
   },
   "module_name": "SCNRecorder",
   "swift_versions": "5.0",
@@ -66,7 +66,7 @@
       },
       "dependencies": {
         "SnapKit": [
-          "~> 5.0.0"
+          "~> 5.7.1"
         ]
       }
     }
