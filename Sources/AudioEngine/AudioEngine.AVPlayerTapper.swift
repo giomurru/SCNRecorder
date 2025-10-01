@@ -73,14 +73,14 @@ extension AudioEngine {
         process: tapProcessCallback
       )
       
-      var tap: Unmanaged<MTAudioProcessingTap>?
+      var tap: MTAudioProcessingTap?
       let status = MTAudioProcessingTapCreate(kCFAllocatorDefault, &callbacks, kMTAudioProcessingTapCreationFlag_PostEffects, &tap)
       
       if status != noErr {
         fatalError("FATAL: creating MTAudioProcessingTap: \(status)")
       }
       
-      return tap!.takeRetainedValue()
+      return tap!
     }
     
     // Define the TapContext class
